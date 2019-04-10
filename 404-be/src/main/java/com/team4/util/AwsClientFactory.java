@@ -26,7 +26,7 @@ public class AwsClientFactory {
                 .standard()
                 .withClientConfiguration(clientConfig)
                 .withCredentials(credentialsProvider)
-                .withRegion(Regions.US_WEST_1)
+                .withRegion(Regions.EU_WEST_1)
                 .build();
     }
 }

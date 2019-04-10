@@ -1,5 +1,6 @@
 package com.team4.controller;
 
+import com.amazonaws.services.rekognition.model.FaceDetail;
 import com.team4.service.FaceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 public class FaceController {
@@ -22,11 +25,19 @@ public class FaceController {
     }
 
     @PostMapping("/face-detection")
-    public ResponseEntity<String> faceDetection(@RequestParam("file") MultipartFile file) throws Exception {
+    public ResponseEntity<List<FaceDetail>> faceDetection(@RequestParam("file") MultipartFile file) throws Exception {
 
-        faceService.detectFaces(file.getBytes());
+        List<FaceDetail> result = faceService.detectFaces(file.getBytes());
 
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @PostMapping("/face-detection-file")
+    public ResponseEntity<List<FaceDetail>> faceDetection() throws Exception {
+
+        List<FaceDetail> result = faceService.detectFaces("E:\\melih1.jpg");
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @PostMapping("/face-comparison")

@@ -3,6 +3,7 @@ package com.team4.service;
 import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.model.*;
 import com.team4.constants.AwsRekognitionConstants;
+import com.team4.io.IOUtil;
 import com.team4.util.AwsClientFactory;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Service
 public class FaceService {
 
-    public void detectFaces(byte[] file) {
+    public List<FaceDetail> detectFaces(byte[] file) {
 
         ByteBuffer byteBuffer = ByteBuffer.wrap(file);
 
@@ -22,7 +23,12 @@ public class FaceService {
                 .withAttributes(Attribute.ALL);
 
         DetectFacesResult result = rekognitionClient.detectFaces(request);
-        List<FaceDetail> faceDetails = result.getFaceDetails();
+        return result.getFaceDetails();
+    }
+
+    public List<FaceDetail> detectFaces(String filePath) {
+        byte[] bytes = IOUtil.readFile(filePath);
+        return detectFaces(bytes);
     }
 
     public void compareFaces(byte[] file1, byte[] file2) {
