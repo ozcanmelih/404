@@ -33,9 +33,9 @@ public class FaceController {
     }
 
     @PostMapping("/face-detection-file")
-    public ResponseEntity<List<FaceDetail>> faceDetection() throws Exception {
+    public ResponseEntity<List<FaceDetail>> faceDetection(@RequestParam("filePath") String filePath) throws Exception {
 
-        List<FaceDetail> result = faceService.detectFaces("E:\\melih1.jpg");
+        List<FaceDetail> result = faceService.detectFaces(filePath);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
