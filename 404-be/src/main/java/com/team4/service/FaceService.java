@@ -4,14 +4,22 @@ import com.amazonaws.services.rekognition.AmazonRekognition;
 import com.amazonaws.services.rekognition.model.*;
 import com.team4.constants.AwsRekognitionConstants;
 import com.team4.io.IOUtil;
+import com.team4.jpa.entity.Candidate;
 import com.team4.util.AwsClientFactory;
 import org.springframework.stereotype.Service;
 
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.List;
 
 @Service
 public class FaceService {
+
+    private CandidateService candidateService;
+
+    public FaceService(CandidateService candidateService) {
+        this.candidateService = candidateService;
+    }
 
     public List<FaceDetail> detectFaces(byte[] file) {
 
@@ -31,7 +39,7 @@ public class FaceService {
         return detectFaces(bytes);
     }
 
-    public void compareFaces(byte[] file1, byte[] file2) {
+    public CompareFacesResult compareFaces(byte[] file1, byte[] file2) {
 
         ByteBuffer byteBuffer1 = ByteBuffer.wrap(file1);
         ByteBuffer byteBuffer2 = ByteBuffer.wrap(file2);
@@ -48,7 +56,15 @@ public class FaceService {
                 .withTargetImage(target)
                 .withSimilarityThreshold(AwsRekognitionConstants.FACE_SIMILARITY_TRESHOLD);
 
-        CompareFacesResult compareFacesResult=rekognitionClient.compareFaces(request);
+        return rekognitionClient.compareFaces(request);
     }
 
+    public CompareFacesResult compareFaces(Long candidateId, byte[] file) {
+
+        Candidate candidate = candidateService.findCandidateById(candidateId);
+        String photoUrl = candidate.getPhotoUrl();
+        byte[] bytes = IOUtil.readImage(photoUrl);
+
+        return compareFaces(file, bytes);
+    }
 }

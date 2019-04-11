@@ -18,6 +18,13 @@ public class Candidate extends EntityBase {
     public Candidate() {
     }
 
+    public Candidate(String name, String surname, Long jiraId, String photoUrl) {
+        this.name = name;
+        this.surname = surname;
+        this.jiraId = jiraId;
+        this.photoUrl = photoUrl;
+    }
+
     public String getName() {
         return name;
     }

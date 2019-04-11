@@ -1,5 +1,6 @@
 package com.team4.controller;
 
+import com.amazonaws.services.rekognition.model.CompareFacesResult;
 import com.amazonaws.services.rekognition.model.FaceDetail;
 import com.team4.service.FaceService;
 import org.slf4j.Logger;
@@ -41,11 +42,11 @@ public class FaceController {
     }
 
     @PostMapping("/face-comparison")
-    public ResponseEntity<String> faceComparison(@RequestParam("file") MultipartFile file) throws Exception {
+    public ResponseEntity<CompareFacesResult> faceComparison(@RequestParam("usrId") Long usrId, @RequestParam("file") MultipartFile file) throws Exception {
 
-        faceService.compareFaces(file.getBytes(), null);
+        CompareFacesResult compareFacesResult = faceService.compareFaces(usrId, file.getBytes());
 
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+        return new ResponseEntity<>(compareFacesResult, HttpStatus.OK);
     }
 
 }
