@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -73,12 +75,14 @@ public class FaceService {
 
         Candidate candidate = candidateService.findCandidateById(candidateId);
         String photoUrl = candidate.getPhotoUrl();
-        byte[] bytesFromUrl = IOUtil.readImage(photoUrl);
+        byte[] sourceBytes = IOUtil.readImage(photoUrl);
 
         List<FaceDetail> faceDetails = detectFaces(file);
         eventLogService.logFaceDetectionResult(candidate, faceDetails);
 
-        CompareFacesResult compareFacesResult = compareFaces(file, bytesFromUrl);
+        Path newImagePath = Paths.get(IOUtil.UPLOAD_ROOT_PATH.toString(), String.valueOf(candidate.getJiraId()), candidateId + "-" + System.currentTimeMillis() + ".jpg");
+        IOUtil.writeImageToCandidatePath(file, newImagePath);
+        CompareFacesResult compareFacesResult = compareFaces(sourceBytes, file);
         eventLogService.logFaceMatchResult(candidate, compareFacesResult);
     }
 }
