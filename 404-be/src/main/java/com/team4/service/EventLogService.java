@@ -1,6 +1,8 @@
 package com.team4.service;
 
+import com.amazonaws.services.rekognition.model.CompareFacesMatch;
 import com.amazonaws.services.rekognition.model.CompareFacesResult;
+import com.amazonaws.services.rekognition.model.ComparedFace;
 import com.amazonaws.services.rekognition.model.FaceDetail;
 import com.team4.constants.EventTypeConstants;
 import com.team4.jpa.entity.Candidate;
@@ -40,5 +42,24 @@ public class EventLogService {
 
     public void logFaceMatchResult(Candidate candidate, CompareFacesResult compareFacesResult){
 
+    	List<CompareFacesMatch> matched = compareFacesResult.getFaceMatches();
+    	List<ComparedFace> unmatched 	= compareFacesResult.getUnmatchedFaces();
+    	
+    	EventLog log = new EventLog();
+    	log.setEventType(EventTypeConstants.FACE_COMPARE);
+
+    	boolean singlePerson = matched.size() == 1 && unmatched.size() == 0;
+    	
+    	if(singlePerson) {
+    		log.setResult(matched.get(0).getSimilarity().doubleValue());
+    		log.setDecision(singlePerson && log.getResult() >= 0.9d ? 1 : 0);
+    		log.setComparisonStr("matching FaceCount: 1 and confidence: " + log.getResult() );
+    	} else {
+    		log.setResult(0d);
+    		log.setDecision(-1);
+    		log.setComparisonStr("matching FaceCount: " + matched.size() + ", unmatching FaceCount:" + unmatched.size());
+    	}
+    	
+    	eventLogRepository.save(log);
     }
 }

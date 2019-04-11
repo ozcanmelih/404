@@ -41,6 +41,14 @@ public class FaceService {
         return detectFaces(bytes);
     }
 
+    public CompareFacesResult compareFaces(String sourcefile, String targetfile) {
+    	byte[] sourceBytes = IOUtil.readFile(sourcefile);
+    	byte[] targetBytes = IOUtil.readFile(targetfile);
+    	
+    	return compareFaces(sourceBytes, targetBytes);
+    	
+    }
+    
     public CompareFacesResult compareFaces(byte[] file1, byte[] file2) {
 
         ByteBuffer byteBuffer1 = ByteBuffer.wrap(file1);
