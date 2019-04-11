@@ -21,8 +21,20 @@ public class EventLogService {
 
     public void logFaceDetectionResult(Candidate candidate, List<FaceDetail> faceList){
         EventLog log = new EventLog();
-        log.setResult((double)faceList.size());
         log.setEventType(EventTypeConstants.FACE_COUNT);
+        
+        boolean singlePerson = faceList.size() == 1;
+        
+        if(singlePerson) {
+        	log.setResult(faceList.get(0).getConfidence().doubleValue());
+        	log.setDecision(singlePerson && log.getResult() >= 0.9d ? 1 : 0);
+        	log.setComparisonStr("faceCount: 1 and confidence: " + log.getResult() );
+        } else {
+        	log.setResult(0d);
+        	log.setDecision(-1);
+        	log.setComparisonStr("faceCount: " + faceList.size());
+        }
+        
         eventLogRepository.save(log);
     }
 
