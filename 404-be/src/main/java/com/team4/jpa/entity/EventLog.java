@@ -4,14 +4,12 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "EVENT_LOG")
-public class EventLog extends  EntityBase {
+public class EventLog extends EntityBase {
 
     private Double result;
     private Integer decision;
     private String comparisonStr;
-
-    @OneToOne
-    private EventType eventType;
+    private String eventType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Candidate candidate;
@@ -43,11 +41,11 @@ public class EventLog extends  EntityBase {
         this.comparisonStr = comparisonStr;
     }
 
-    public EventType getEventType() {
+    public String getEventType() {
         return eventType;
     }
 
-    public void setEventType(EventType eventType) {
+    public void setEventType(String eventType) {
         this.eventType = eventType;
     }
 

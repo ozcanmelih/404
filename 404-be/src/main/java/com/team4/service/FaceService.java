@@ -16,9 +16,11 @@ import java.util.List;
 public class FaceService {
 
     private CandidateService candidateService;
+    private EventLogService eventLogService;
 
-    public FaceService(CandidateService candidateService) {
+    public FaceService(CandidateService candidateService, EventLogService eventLogService) {
         this.candidateService = candidateService;
+        this.eventLogService = eventLogService;
     }
 
     public List<FaceDetail> detectFaces(byte[] file) {
@@ -59,12 +61,16 @@ public class FaceService {
         return rekognitionClient.compareFaces(request);
     }
 
-    public CompareFacesResult compareFaces(Long candidateId, byte[] file) {
+    public void doFaceOperations(Long candidateId, byte[] file) {
 
         Candidate candidate = candidateService.findCandidateById(candidateId);
         String photoUrl = candidate.getPhotoUrl();
-        byte[] bytes = IOUtil.readImage(photoUrl);
+        byte[] bytesFromUrl = IOUtil.readImage(photoUrl);
 
-        return compareFaces(file, bytes);
+        List<FaceDetail> faceDetails = detectFaces(file);
+        eventLogService.logFaceDetectionResult(candidate, faceDetails);
+
+        CompareFacesResult compareFacesResult = compareFaces(file, bytesFromUrl);
+        eventLogService.logFaceMatchResult(candidate, compareFacesResult);
     }
 }
