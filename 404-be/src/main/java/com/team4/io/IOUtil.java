@@ -8,8 +8,12 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class IOUtil {
+	
+	public static final Path UPLOAD_ROOT_PATH = Paths.get("C:", "Dev", "uploads");
 
     private static final Logger logger = LoggerFactory.getLogger(IOUtil.class);
 
