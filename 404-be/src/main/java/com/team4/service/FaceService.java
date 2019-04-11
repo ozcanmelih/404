@@ -75,7 +75,7 @@ public class FaceService {
 
         Candidate candidate = candidateService.findCandidateById(candidateId);
         String photoUrl = candidate.getPhotoUrl();
-        byte[] sourceBytes = IOUtil.readImage(photoUrl);
+        byte[] sourceBytes = IOUtil.readFile(photoUrl);
 
         List<FaceDetail> faceDetails = detectFaces(file);
         eventLogService.logFaceDetectionResult(candidate, faceDetails);
