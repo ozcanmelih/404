@@ -19,8 +19,6 @@ import java.util.List;
 @RestController
 public class FaceController {
 
-    private static final Logger logger = LoggerFactory.getLogger(FaceController.class);
-
     private FaceService faceService;
 
     public FaceController(FaceService faceService) {
