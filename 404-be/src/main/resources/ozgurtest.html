@@ -1,0 +1,50 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	<script src="https://code.jquery.com/jquery-3.4.0.min.js" ></script>
+	<script src="screen.js"></script>
+	<style>
+		html, body, h1, p {
+			margin:0 auto;
+			padding: 0!important;
+			text-align: center;
+		}
+
+		#currentVid {
+			position: fixed;
+			width: 240;
+			height: 160;
+			top: 1;
+			left: 1;
+		}
+		#captured {
+			width: 640;
+			height: 480;
+			border: 2px solid green;
+		}
+	</style>
+
+	<title>OBSS Interview</title>
+</head>
+<body onload="startStream()">
+	
+<br><br>
+<h1>Welcome to OBSS Interview</h1>
+<br>
+<p>When you are ready you can start exam.</p>
+<br>
+<p>You must give permission to OBSS Interview extension for camera and screen recording.</p>
+<br><br>
+<input type="text"/>
+<br><br>
+<button id="btn-start-recording">Start Exam</button>
+<br><br>
+<button id="btn-stop-recording" disabled="">Finish Exam</button>
+<br/>
+<br/>
+<button onclick="getScreenshot()">SS</button>
+<br/>
+<br/>
+<img id="captured" />
+</body>
+</html>
