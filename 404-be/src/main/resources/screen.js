@@ -25,7 +25,8 @@ function startStream() {
 	$("body").bind("copy", function(e){
 		// access the clipboard using the api
 		console.log(e);
-		var copiedData = e.originalEvent.clipboardData.getData('text');
+		var copiedData = window.getSelection().toString(); 
+		//e.originalEvent.clipboardData.getData('text'); //not valid for cpy
 		var postURL = "http://localhost:8080/events/COPY/" + candidateId;
 		console.log("sneding copy data");
 		sendCopyPasteEvent(postURL, copiedData);
