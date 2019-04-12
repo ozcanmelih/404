@@ -16,15 +16,43 @@ import java.util.List;
 public class EventLogService {
 
     private EventLogRepository eventLogRepository;
+    private CandidateService candidateService;
 
-    public EventLogService(EventLogRepository eventLogRepository) {
+    public EventLogService(EventLogRepository eventLogRepository, CandidateService candidateService) {
         this.eventLogRepository = eventLogRepository;
+        this.candidateService = candidateService;
+    }
+    
+    public void logPageEvents(Long candidateId, String eventType, String eventString) {
+    	Candidate candidate = candidateService.findCandidateById(candidateId);
+    	EventLog log = new EventLog();
+        log.setEventType(eventType);
+        log.setCandidate(candidate);
+        
+    	switch (eventType.toUpperCase()) {
+		case EventTypeConstants.BROWSER_COPY:
+			
+			break;
+
+		case EventTypeConstants.BROWSER_PASTE:
+			
+			break;
+			
+		default:
+			break;
+		}
+    	
+    	log.setResult(0d);
+    	log.setDecision(-1);
+    	log.setComparisonStr(eventString);
+    	
+    	eventLogRepository.save(log);
     }
 
     public void logFaceDetectionResult(Candidate candidate, List<FaceDetail> faceList){
         EventLog log = new EventLog();
         log.setEventType(EventTypeConstants.FACE_COUNT);
-        
+        log.setCandidate(candidate);
         boolean singlePerson = faceList.size() == 1;
         
         if(singlePerson) {
@@ -47,7 +75,7 @@ public class EventLogService {
     	
     	EventLog log = new EventLog();
     	log.setEventType(EventTypeConstants.FACE_COMPARE);
-
+    	log.setCandidate(candidate);
     	boolean singlePerson = matched.size() == 1 && unmatched.size() == 0;
     	
     	if(singlePerson) {

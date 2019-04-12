@@ -14,8 +14,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 public class IOUtil {
-	
-	public static final Path UPLOAD_ROOT_PATH = Paths.get("C:", "Dev", "uploads");
+	public static final Path UPLOAD_ROOT_PATH = Paths.get("C:", "Users", "obss_ozgurc", "Documents", "obss-projects", "uploads");
 
     private static final Logger logger = LoggerFactory.getLogger(IOUtil.class);
 

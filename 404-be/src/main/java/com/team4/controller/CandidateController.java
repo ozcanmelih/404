@@ -12,11 +12,11 @@ import com.team4.jpa.entity.Candidate;
 import com.team4.service.CandidateService;
 
 @RestController
-public class CandidateCheckController {
+public class CandidateController {
 
     private CandidateService candidateService;
 
-    public CandidateCheckController(CandidateService candidateService) {
+    public CandidateController(CandidateService candidateService) {
         this.candidateService = candidateService;
     }
 
